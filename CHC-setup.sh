@@ -45,6 +45,13 @@ if [[ $DOSETUP =~ "y" ]] ; then
   cd
 
   git clone https://github.com/chaincoin/chaincoin
+  git clone https://github.com/chaincoin/chaincoin
+  cd chaincoin
+  ./autogen.sh
+  ./configure --without-gui
+  make
+  make install
+  
   sudo mv  chaincoin/bin/* /usr/bin
 
   sudo apt-get install -y ufw
