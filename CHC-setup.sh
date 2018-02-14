@@ -45,7 +45,7 @@ if [[ $DOSETUP =~ "y" ]] ; then
   cd
 
   git clone https://github.com/chaincoin/chaincoin
-  sudo mv  chaincoin*/bin/* /usr/bin
+  sudo mv  chaincoin/bin/* /usr/bin
 
   sudo apt-get install -y ufw
   sudo ufw allow ssh/tcp
@@ -92,7 +92,7 @@ for i in `seq 1 1 $MNCOUNT`; do
   read RPCPORT
 
   ALIAS=${ALIAS,,}
-  CONF_DIR=~/.bitcoingreen_$ALIAS
+  CONF_DIR=~/.chaincoin_$ALIAS
 
   # Create scripts
   echo '#!/bin/bash' > ~/bin/chaincoind_$ALIAS.sh
