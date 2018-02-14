@@ -101,7 +101,7 @@ for i in `seq 1 1 $MNCOUNT`; do
   echo "chaincoin-cli -conf=$CONF_DIR/chaincoin.conf -datadir=$CONF_DIR "'$*' >> ~/bin/chaincoin-cli_$ALIAS.sh
   echo '#!/bin/bash' > ~/bin/chaincoin-tx_$ALIAS.sh
   echo "chaincoin-tx -conf=$CONF_DIR/chaincoin.conf -datadir=$CONF_DIR "'$*' >> ~/bin/chaincoin-tx_$ALIAS.sh
-  chmod 755 ~/bin/chaincoin*.sh
+  chmod 755 ~/bin/chaincoin.sh
 
   mkdir -p $CONF_DIR
   echo "rpcuser=user"`shuf -i 100000-10000000 -n 1` >> chaincoin.conf_TEMP
@@ -121,7 +121,6 @@ for i in `seq 1 1 $MNCOUNT`; do
   #echo "addnode=185.239.238.89" >> chaincoin.conf_TEMP
   #echo "addnode=185.239.238.92" >> chaincoin.conf_TEMP
   #echo "addnode=207.148.26.77" >> chaincoin.conf_TEMP
-
   echo "" >> chaincoin.conf_TEMP
   echo "port=$PORT" >> chaincoin.conf_TEMP
   echo "masternodeaddress=$IP:$PORT" >> chaincoin.conf_TEMP
