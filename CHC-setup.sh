@@ -22,15 +22,16 @@ if [[ $DOSETUP =~ "y" ]] ; then
   sudo apt-get -y upgrade
   sudo apt-get -y dist-upgrade
   sudo apt-get install -y nano htop git
-  sudo apt-get install -y software-properties-common python-software-properties
-  sudo apt-get install -y build-essential libtool autotools-dev pkg-config libssl-dev libevent-dev bsdmainutils python3
+  sudo apt-get install -y software-properties-common
+  sudo apt-get install -y build-essential libtool autotools-dev pkg-config libssl-dev
   sudo apt-get install -y libboost-all-dev
   sudo apt-get install -y libevent-dev
   sudo apt-get install -y libminiupnpc-dev
-  sudo apt-get install -y libzmq3-dev
+  sudo apt-get install -y bsdmainutils
+  sudo apt-get install -y python3
   sudo apt-get install -y autoconf
   sudo apt-get install -y automake unzip
-  sudo add-apt-repository ppa:bitcoin/bitcoin
+  sudo add-apt-repository  -y  ppa:bitcoin/bitcoin
   sudo apt-get update
   sudo apt-get install -y libdb4.8-dev libdb4.8++-dev
 
@@ -44,20 +45,24 @@ if [[ $DOSETUP =~ "y" ]] ; then
   sudo echo "/var/swap.img none swap sw 0 0" >> /etc/fstab
   cd
 
+  #wget https://github.com/chaincoin/chaincoin/releases/download/1.0.0/chaincoin-1.0.0-x86_64-linux-gnu.tar.gz
+  #tar -xzf chaincoin*.tar.gz
+
   git clone https://github.com/chaincoin/chaincoin
   cd chaincoin
   ./autogen.sh
   ./configure --without-gui
   make
   make install
-  
-  sudo mv  chaincoin/bin/* /usr/bin
+  cd
+
+  sudo mv  chaincoin*/bin/* /usr/bin
 
   sudo apt-get install -y ufw
   sudo ufw allow ssh/tcp
   sudo ufw limit ssh/tcp
   sudo ufw logging on
-  sudo ufw enable
+  echo "y" | sudo ufw enable
   sudo ufw status
 
   mkdir -p ~/bin
@@ -86,7 +91,7 @@ for i in `seq 1 1 $MNCOUNT`; do
   read ALIAS
 
   echo ""
-  echo "Enter port for node $ALIAS"
+  echo "Enter port for node $ALIAS(i.E. 11994)"
   read PORT
 
   echo ""
@@ -107,7 +112,7 @@ for i in `seq 1 1 $MNCOUNT`; do
   echo "chaincoin-cli -conf=$CONF_DIR/chaincoin.conf -datadir=$CONF_DIR "'$*' >> ~/bin/chaincoin-cli_$ALIAS.sh
   echo '#!/bin/bash' > ~/bin/chaincoin-tx_$ALIAS.sh
   echo "chaincoin-tx -conf=$CONF_DIR/chaincoin.conf -datadir=$CONF_DIR "'$*' >> ~/bin/chaincoin-tx_$ALIAS.sh
-  chmod 755 ~/bin/chaincoin.sh
+  chmod 755 ~/bin/chaincoin*.sh
 
   mkdir -p $CONF_DIR
   echo "rpcuser=user"`shuf -i 100000-10000000 -n 1` >> chaincoin.conf_TEMP
@@ -121,12 +126,23 @@ for i in `seq 1 1 $MNCOUNT`; do
   echo "maxconnections=256" >> chaincoin.conf_TEMP
   echo "masternode=1" >> chaincoin.conf_TEMP
   echo "" >> chaincoin.conf_TEMP
-  #echo "addnode=134.255.232.212" >> chaincoin.conf_TEMP
-  #echo "addnode=207.148.26.77" >> chaincoin.conf_TEMP
-  #echo "addnode=108.61.103.123" >> chaincoin.conf_TEMP
-  #echo "addnode=185.239.238.89" >> chaincoin.conf_TEMP
-  #echo "addnode=185.239.238.92" >> chaincoin.conf_TEMP
-  #echo "addnode=207.148.26.77" >> chaincoin.conf_TEMP
+
+  #echo "addnode=addnode=51.15.198.252" >> chaincoin.conf_TEMP
+  #echo "addnode=addnode=51.15.206.123" >> chaincoin.conf_TEMP
+  #echo "addnode=addnode=51.15.66.234" >> chaincoin.conf_TEMP
+  #echo "addnode=addnode=51.15.86.224" >> chaincoin.conf_TEMP
+  #echo "addnode=addnode=51.15.89.27" >> chaincoin.conf_TEMP
+  #echo "addnode=addnode=51.15.57.193" >> chaincoin.conf_TEMP
+  #echo "addnode=addnode=134.255.232.212" >> chaincoin.conf_TEMP
+  #echo "addnode=addnode=185.239.238.237" >> chaincoin.conf_TEMP
+  #echo "addnode=addnode=185.239.238.240" >> chaincoin.conf_TEMP
+  #echo "addnode=addnode=134.255.232.212" >> chaincoin.conf_TEMP
+  #echo "addnode=addnode=207.148.26.77" >> chaincoin.conf_TEMP
+  #echo "addnode=addnode=207.148.19.239" >> chaincoin.conf_TEMP
+  #echo "addnode=addnode=108.61.103.123" >> chaincoin.conf_TEMP
+  #echo "addnode=addnode=185.239.238.89" >> chaincoin.conf_TEMP
+  #echo "addnode=addnode=185.239.238.92" >> chaincoin.conf_TEMP
+
   echo "" >> chaincoin.conf_TEMP
   echo "port=$PORT" >> chaincoin.conf_TEMP
   echo "masternodeaddress=$IP:$PORT" >> chaincoin.conf_TEMP
